@@ -29,13 +29,29 @@ public class TriangleCollection {
     // PRECONDITION: numTriangles >= 2
     public TriangleCollection(int numTriangles, int startX, int startY) {
       /* IMPLEMENT ME */
+      int currentTriangleIdx = 0;
+      int times = startX - numTriangles;
+      collection = new Triangle[numTriangles];
+      for (int i = 0 ; i < numTriangles; i ++) {
+        collection[i] = new Triangle(new Point(-startX, 0),new Point(0, startY),(new Point(0, 0)));
+      }
+      for (int j = startX; j > times; j --) {
+        for(int f = currentTriangleIdx; f < collection.length; f ++) {
+          collection[f].setVertices(2, new Point(j, 0));
+      }
+      currentTriangleIdx++;
+    }
     }
   
     // Calculate and return the sum of the perimeters of
     // all Triangles in the collection
     public double totalPerimeter() {
       /* IMPLEMENT ME */
-      return 0.0;
+      double totalP = 0;
+      for (Triangle tris : collection) {
+        totalP += tris.perimeter();
+      }
+      return totalP;
     }
   
     // adds increment to both the x and y coordinates of each of the
@@ -43,6 +59,20 @@ public class TriangleCollection {
     // ADD GETTER AND SETTER METHODS TO OTHER CLASSES AS NECESSARY
     public void shiftTriangles(int increment) {
       /* IMPLEMENT ME */
+      for (int i = 0 ; i < collection.length; i ++) {
+        for (int j = 0; j < 3 ; j++) {
+          int triX = collection[i].getVertices()[j].getX();
+          int triY = collection[i].getVertices()[j].getY();
+          if (j == 0) {
+            collection[i].setVertices(j, new Point(triX + increment, increment));
+          } else if (j == 1) {
+            collection[i].setVertices(j, new Point(increment, triY + increment));
+          } else {
+            collection[i].setVertices(j, new Point(triX + increment, increment));
+          }
+        }
+      }
+
     }
   
     // returns a String that contains each Triangle in the 
@@ -55,8 +85,13 @@ public class TriangleCollection {
     //  [(1, 5), (5, 12), (7, 5)]"
     public String triangleCollectionInfo() {
       /* IMPLEMENT ME */
-      return "";
+      String info = "";
+      for (int i = 0; i < collection.length; i ++) {
+        info += (collection[i].triangleInfo()) + "\n";
+      }
+      return info;
     }
+
   }
   
   
